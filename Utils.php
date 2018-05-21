@@ -24,8 +24,37 @@ Class Utils
             //Sort nearest city
             uasort(Utils::$cityDistanceMap[$cityOutsideLoop['city_name']], 'customerSortCompare');
         }
+    }
+    
+    
+    /**
+     * Find the shortest path base on current data
+     * 
+     * @return array of point.
+     */
+    public static function findShortestPath() {
+        $firstCity = Utils::$cities[0]['city_name'];
+        $path = [$firstCity => 0];
+        reset(self::$cityDistanceMap[$firstCity]);
+        $nextCity = key(self::$cityDistanceMap[$firstCity]);
+        print_r("Next city: $nextCity\n");
+        while ($nextCity) {
+            $currentCity = $nextCity;
+            foreach (self::$cityDistanceMap[$currentCity] as $cityName => $distance) {
+                print_r("Loop city name: $cityName\n");
+                if (!array_key_exists($cityName, $path)) {
+                    $nextCity = $cityName;
+                    $path[$cityName]  = $distance;
+                }
+            }
+            
+            if ($currentCity == $nextCity) {
+                $nextCity = null;
+            }
+        }
         
         
+        return $path;
     }
 
     /**
