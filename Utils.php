@@ -3,7 +3,18 @@
 Class Utils
 {
 
+    /**
+     * Store cities were imported from cities.txt
+     * 
+     * @var array 
+     */
     public static $cities          = [];
+    /**
+     * Store distance of a city with all cities.
+     * This array was indexed as: city_name => array(city_name_1 => distance, city_name_2 => distance)
+     * 
+     * @var array 
+     */
     public static $cityDistanceMap = [];
 
     /**
@@ -30,14 +41,13 @@ Class Utils
     /**
      * Find the shortest path base on current data
      * 
-     * @return array of point.
+     * @return array of points.
      */
     public static function findShortestPath() {
         $firstCity = Utils::$cities[0]['city_name'];
         $path = [$firstCity => 0];
         reset(self::$cityDistanceMap[$firstCity]);
         $nextCity = key(self::$cityDistanceMap[$firstCity]);
-        print_r("Next city: $nextCity\n");
         while ($nextCity) {
             $currentCity = $nextCity;
             foreach (self::$cityDistanceMap[$currentCity] as $cityName => $distance) {
@@ -97,6 +107,7 @@ Class Utils
      * @param float $latitudeTo Latitude of target point in [deg decimal]
      * @param float $longitudeTo Longitude of target point in [deg decimal]
      * @param float $earthRadius Mean earth radius in [m]
+     * 
      * @return float Distance between points in [m] (same as earthRadius)
      */
     public static function vincentyGreatCircleDistance(
